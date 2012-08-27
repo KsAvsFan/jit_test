@@ -1,0 +1,88 @@
+<iframe width="1000" height="750" src="http://www.youtube.com/embed/NJjpF25Ia0Y" frameborder="0" allowfullscreen></iframe>
+<br/>
+<br/>
+
+
+
+
+<button id="aha" style="height: 50px; width: 350px; font-weight: bold; font-size: 18px; margin-left: 25px;">AHA! (+)</button>
+<button id="huh" style="height: 50px; width: 350px; font-weight: bold; font-size: 18px; margin-left: 20px;">HUH? (-)</button>
+<br>
+<br>
+<input type="text" id="name" value="Name please..." style="height: 20px; width: 145px; margin-left: 25px;" /> 
+<button id="start" style="height: 20px; width: 150px; margin-left:20px">Start</button>
+
+<br/>
+<br/>
+
+<script type="text/javascript">
+  var startTime = new Date();
+  var huh_key = 45;
+  var aha_key = 61;
+
+$(function(){
+
+
+
+
+  function submit(_name, _clickTime, _clickType){
+    $.ajax({
+      type: "POST",
+      url: "/clicks",
+      data: { name: _name, click_type: _clickType, click_time: _clickTime },
+      async: true
+    })
+  }
+
+  $(document).keypress(function(e){ 
+    console.log(e.which);
+
+    if (e.which === huh_key)
+    {
+      e.preventDefault();
+      pushEvent("huh");
+      return;
+    }
+
+    if (e.which === aha_key)
+    {
+      e.preventDefault();
+      pushEvent("aha");
+      return;
+    }
+  });
+
+  function pushEvent( clickType )
+  {
+    name = $("#name").val();
+    clickTime = getSeconds();
+    submit(name, clickTime, clickType);    
+
+  }
+
+  $("#aha").click(function(e){
+    e.preventDefault();
+
+    pushEvent("aha")
+  })
+
+$("#huh").click(function(e){
+    e.preventDefault();
+
+    pushEvent("huh");
+  })
+
+$("#start").click(function(e){
+  e.preventDefault();
+  startTime = new Date();
+})
+
+function getSeconds()
+{
+  var ms = (new Date() - startTime)
+
+  return parseInt(ms / 1000);
+}
+
+})
+</script>
