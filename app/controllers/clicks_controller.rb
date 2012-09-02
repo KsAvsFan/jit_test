@@ -41,25 +41,12 @@ class ClicksController < ApplicationController
   # POST /clicks.json
   def create
 
-    # puts params
-    # puts params[0]
-    # puts params[:name]
-    # @click = Click.new(params[:click])
     @click = Click.new
     @click.name = params[:name]
     @click.click_type = params[:click_type]
     @click.click_time = params[:click_time]
     @click.save
-    respond_to do |format|
-      if @click.save
-        format.js
-        format.html { redirect_to @click, notice: 'Click was successfully created.' }
-        format.json { render json: @click, status: :created, location: @click }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @click.errors, status: :unprocessable_entity }
-      end
-    end
+   
   end
 
   # PUT /clicks/1
